@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_scanner/providers/UI_provider.dart';
 import 'package:qr_scanner/screens/home_screen.dart';
 
+import 'package:qr_scanner/providers/UI_provider.dart';
+
 import 'package:qr_scanner/screens/map_screen.dart';
+
 
 void main() => runApp(MyApp());
 
