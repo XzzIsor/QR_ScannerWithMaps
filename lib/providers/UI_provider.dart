@@ -11,5 +11,4 @@ class UIProvider extends ChangeNotifier {
     _pageSelected = i;
     notifyListeners();
   }
-  
 }
