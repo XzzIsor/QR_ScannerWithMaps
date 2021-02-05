@@ -14,7 +14,7 @@ class ScanModel {
     this.type = value.contains("http") ? "http" : "geo";
   }
 
-  int id;
+  String id;
   String type;
   String value;
 
