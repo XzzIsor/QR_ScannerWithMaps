@@ -9,27 +9,29 @@ class MapsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    return FutureBuilder<List<ScanModel>>(
+    final DBProvider db = new DBProvider();
+    db.initializeStream();
+    return StreamBuilder<List<ScanModel>>(
         // <2> Pass `Future<QuerySnapshot>` to future
-        future: db.getGeoDocuments(),
+        stream: db.firestoreStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             // <3> Retrieve `List<DocumentSnapshot>` from snapshot
             final List<ScanModel> documents = snapshot.data;
             return ListView(
                 children: documents
-                    .map((doc) => Card(
-                          child: ListTile(
-                            title: Text(doc.value),
-                            subtitle: Text(doc.id),
-                          ),
-                        ))
+                    .map((doc) => doc.type == "geo"
+                        ? Card(
+                            child: ListTile(
+                              title: Text(doc.value),
+                            ),
+                          )
+                        : Container())
                     .toList());
           } else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
           }
-          return Text("Cargando");
+          return Center(child: CircularProgressIndicator());
         });
   }
 }
