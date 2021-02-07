@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:qr_scanner/models/scan_model.dart';
 import 'package:qr_scanner/providers/DB_provider.dart';
 
@@ -26,6 +25,7 @@ class _DirectionPageState extends State<DirectionPage> {
                         ? Card(
                             child: ListTile(
                               title: Text(doc.value),
+                              trailing: IconButton(icon: Icon(Icons.delete), onPressed: (){},),
                             ),
                           )
                         : Container())
