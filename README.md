@@ -1,6 +1,7 @@
 # qr_scanner
 
 A new Flutter project.
+a program to read QR codes
 
 ## Getting Started
 

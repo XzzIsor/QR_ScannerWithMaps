@@ -11,7 +11,7 @@ class ScanModel {
     this.type,
     @required this.value,
   }) {
-    this.type = value.contains("http") ? "http" : "geo";
+    this.type = value.contains("http") ? "http" : value.contains("geo") ? "geo" : "without Type";
   }
 
   String id;
