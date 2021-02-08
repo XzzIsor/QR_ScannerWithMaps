@@ -17,7 +17,7 @@ class CustomFloatingButton extends StatelessWidget {
           print(barcodeScanRes);
           ScanModel newScanModel = new ScanModel(value: barcodeScanRes);
           db.addData(newScanModel);
-          db.updateStream(newScanModel);
+          db.initializeStream();
         }
     );
   }

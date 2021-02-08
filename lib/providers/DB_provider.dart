@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:qr_scanner/models/scan_model.dart';
 
 class DBProvider {
-
   FirebaseFirestore db = FirebaseFirestore.instance;
-   static final DBProvider _singleton = DBProvider._internal();
+  static final DBProvider _singleton = DBProvider._internal();
 
   factory DBProvider() {
     return _singleton;
@@ -25,12 +25,7 @@ class DBProvider {
   Stream<List<ScanModel>> get firestoreStream =>
       _firestoreStreamController.stream;
 
-  void disposeStream() => _firestoreStreamController?.close(); 
-
-  Future<void> updateStream(ScanModel scanModel) async {
-    _scanModelList.add(scanModel);
-    firestoreSink(_scanModelList);
-  }
+  void disposeStream() => _firestoreStreamController?.close();
 
   Future<void> initializeStream() async {
     List<ScanModel> httpScanModelList = await getHttpDocuments();
@@ -69,31 +64,20 @@ class DBProvider {
     return await db.collection("geo").doc(id).update({'value': value});
   }
 
-  Future<void> deleteHttpDocuments({String id}) async {
+  Future<void> deleteDocuments({String id, @required bool http}) async {
     if (id != null) {
-      await db.collection("geo").doc(id).delete();
+      _scanModelList.removeWhere((doc) => doc.id == id); 
+      firestoreSink(_scanModelList);
+      await db.collection(http ? "http" : "geo").doc(id).delete();
       return;
     }
-
+    firestoreSink([]);
+    _scanModelList = [];
     QuerySnapshot query = await db.collection('http').get();
     query.docs.forEach((QueryDocumentSnapshot doc) async {
-      ScanModel newModel =
-          new ScanModel(value: doc.data()["value"], id: doc.id, type: "http");
-      await db.collection("http").doc(newModel.id).delete();
-    });
-  }
-
-  Future<void> deleteGeoDocuments({String id}) async {
-    if (id != null) {
-      await db.collection("geo").doc(id).delete();
-      return;
-    }
-
-    QuerySnapshot query = await db.collection('geo').get();
-    query.docs.forEach((QueryDocumentSnapshot doc) async {
-      ScanModel newModel =
-          new ScanModel(value: doc.data()["value"], id: doc.id, type: "geo");
-      await db.collection("geo").doc(newModel.id).delete();
+      ScanModel newModel = new ScanModel(
+          value: doc.data()["value"], id: doc.id, type: http ? "http" : "geo");
+      await db.collection(http ? "http" : "geo").doc(newModel.id).delete();
     });
   }
 
