@@ -25,7 +25,9 @@ class _DirectionPageState extends State<DirectionPage> {
                         ? Card(
                             child: ListTile(
                               title: Text(doc.value),
-                              trailing: IconButton(icon: Icon(Icons.delete), onPressed: (){},),
+                              trailing: IconButton(icon: Icon(Icons.delete), onPressed: (){
+                                db.deleteDocuments(id: doc.id, http: true); 
+                              },),
                             ),
                           )
                         : Container())

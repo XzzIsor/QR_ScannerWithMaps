@@ -42,10 +42,10 @@ class HomeScreen extends StatelessWidget {
 
     switch (selected) {
       case 0:
-        db.deleteGeoDocuments();
+        db.deleteDocuments(http: false);
         break;
       case 1:
-        db.deleteHttpDocuments();
+        db.deleteDocuments(http: true);
         break;
       default:
     }
