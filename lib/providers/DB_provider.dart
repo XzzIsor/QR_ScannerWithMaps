@@ -28,33 +28,23 @@ class DBProvider {
   void disposeStream() => _firestoreStreamController?.close();
 
   Future<void> initializeStream() async {
-    List<ScanModel> httpScanModelList = await getHttpDocuments();
-    List<ScanModel> geoScanModelList = await getGeoDocuments();
+    List<ScanModel> httpScanModelList = await getCollection('http');
+    List<ScanModel> geoScanModelList = await getCollection('geo');
     _scanModelList = [...httpScanModelList, ...geoScanModelList];
     firestoreSink(_scanModelList);
   }
 
-  Future<List<ScanModel>> getHttpDocuments() async {
-    QuerySnapshot query = await db.collection('http').get();
+  Future<List<ScanModel>> getCollection(String collectionName) async {
+    QuerySnapshot query = await db.collection(collectionName).get();
     List<ScanModel> data = new List();
     query.docs.forEach((QueryDocumentSnapshot doc) {
       ScanModel newModel =
-          new ScanModel(value: doc.data()["value"], id: doc.id, type: "http");
+          new ScanModel(value: doc.data()["value"], id: doc.id, type: collectionName);
       data.add(newModel);
     });
     return data;
   }
 
-  Future<List<ScanModel>> getGeoDocuments() async {
-    QuerySnapshot query = await db.collection('geo').get();
-    List<ScanModel> data = new List();
-    query.docs.forEach((QueryDocumentSnapshot doc) {
-      ScanModel newModel =
-          new ScanModel(value: doc.data()["value"], id: doc.id, type: "geo");
-      data.add(newModel);
-    });
-    return data;
-  }
 
   Future<void> updateHttpDocument(String id, String value) async {
     return await db.collection("http").doc(id).update({'value': value});

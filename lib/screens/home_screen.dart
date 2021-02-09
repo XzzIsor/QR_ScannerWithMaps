@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_scanner/Components/Body_HomePage.dart';
-
 import 'package:qr_scanner/Components/Custom_floatingButton.dart';
 import 'package:qr_scanner/Components/Custom_navigationbar.dart';
 import 'package:qr_scanner/providers/DB_provider.dart';
@@ -24,12 +23,11 @@ class HomeScreen extends StatelessWidget {
             ),
             onPressed: () {
               deleteFunction(context);
-              print("ejecutando"); 
             },
           )
         ],
       ),
-      body: BodyPage(),
+      body:BodyPage(),
       floatingActionButton: CustomFloatingButton(),
       bottomNavigationBar: CustomNavigationBar(),
     );
