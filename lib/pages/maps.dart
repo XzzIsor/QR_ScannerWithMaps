@@ -10,10 +10,10 @@ class MapsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DBProvider db = new DBProvider();
-    db.initializeStream();
-    return StreamBuilder<List<ScanModel>>(
+    DBProvider cosa = DBProvider();
+    return FutureBuilder<List<ScanModel>>(
         // <2> Pass `Future<QuerySnapshot>` to future
-        stream: db.firestoreStream,
+        future: cosa.getAllScanModel(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             // <3> Retrieve `List<DocumentSnapshot>` from snapshot
