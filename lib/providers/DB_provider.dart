@@ -14,24 +14,10 @@ class DBProvider {
 
   DBProvider._internal();
 
-  List<ScanModel> _scanModelList = new List<ScanModel>();
-
-  final _firestoreStreamController =
-      StreamController<List<ScanModel>>.broadcast();
-
-  Function(List<ScanModel>) get firestoreSink =>
-      _firestoreStreamController.sink.add;
-
-  Stream<List<ScanModel>> get firestoreStream =>
-      _firestoreStreamController.stream;
-
-  void disposeStream() => _firestoreStreamController?.close();
-
-  Future<void> initializeStream() async {
+  Future<List<ScanModel>> getAllScanModel() async {
     List<ScanModel> httpScanModelList = await getCollection('http');
     List<ScanModel> geoScanModelList = await getCollection('geo');
-    _scanModelList = [...httpScanModelList, ...geoScanModelList];
-    firestoreSink(_scanModelList);
+    return [...httpScanModelList, ...geoScanModelList];
   }
 
   Future<List<ScanModel>> getCollection(String collectionName) async {
@@ -56,13 +42,9 @@ class DBProvider {
 
   Future<void> deleteDocuments({String id, @required bool http}) async {
     if (id != null) {
-      _scanModelList.removeWhere((doc) => doc.id == id); 
-      firestoreSink(_scanModelList);
       await db.collection(http ? "http" : "geo").doc(id).delete();
       return;
     }
-    firestoreSink([]);
-    _scanModelList = [];
     QuerySnapshot query = await db.collection('http').get();
     query.docs.forEach((QueryDocumentSnapshot doc) async {
       ScanModel newModel = new ScanModel(

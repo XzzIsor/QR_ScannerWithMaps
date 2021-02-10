@@ -11,10 +11,10 @@ class _DirectionPageState extends State<DirectionPage> {
   final DBProvider db = new DBProvider();
   @override
   Widget build(BuildContext context) {
-    db.initializeStream();
-    return StreamBuilder<List<ScanModel>>(
+    DBProvider cosa = DBProvider();
+    return FutureBuilder<List<ScanModel>>(
         // <2> Pass `Future<QuerySnapshot>` to future
-        stream: db.firestoreStream,
+        future: cosa.getAllScanModel(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             // <3> Retrieve `List<DocumentSnapshot>` from snapshot
@@ -25,9 +25,12 @@ class _DirectionPageState extends State<DirectionPage> {
                         ? Card(
                             child: ListTile(
                               title: Text(doc.value),
-                              trailing: IconButton(icon: Icon(Icons.delete), onPressed: (){
-                                db.deleteDocuments(id: doc.id, http: true); 
-                              },),
+                              trailing: IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  db.deleteDocuments(id: doc.id, http: true);
+                                },
+                              ),
                             ),
                           )
                         : Container())
