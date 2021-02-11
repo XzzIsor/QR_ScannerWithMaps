@@ -4,6 +4,7 @@ import 'package:qr_scanner/Components/Body_HomePage.dart';
 import 'package:qr_scanner/Components/Custom_floatingButton.dart';
 import 'package:qr_scanner/Components/Custom_navigationbar.dart';
 import 'package:qr_scanner/providers/DB_provider.dart';
+import 'package:qr_scanner/providers/Scan_Provider.dart';
 import 'package:qr_scanner/providers/UI_provider.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -34,18 +35,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   void deleteFunction(BuildContext context) {
-    final DBProvider db = new DBProvider();
-    final uiProvider = Provider.of<UIProvider>(context, listen: false);
-    final selected = uiProvider.pageSelected;
-
-    switch (selected) {
-      case 0:
-        db.deleteDocuments(http: false);
-        break;
-      case 1:
-        db.deleteDocuments(http: true);
-        break;
-      default:
-    }
+    final _scanProvider = Provider.of<ScanProvider>(context, listen: false);
+    _scanProvider.deleteAllScans();
   }
 }
