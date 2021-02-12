@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:qr_scanner/Components/Body_HomePage.dart';
 import 'package:qr_scanner/Components/Custom_floatingButton.dart';
 import 'package:qr_scanner/Components/Custom_navigationbar.dart';
-import 'package:qr_scanner/providers/DB_provider.dart';
+
 import 'package:qr_scanner/providers/Scan_Provider.dart';
-import 'package:qr_scanner/providers/UI_provider.dart';
+
 
 class HomeScreen extends StatelessWidget {
   @override

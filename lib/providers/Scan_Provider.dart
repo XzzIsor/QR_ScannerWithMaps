@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
+
 import 'package:qr_scanner/models/scan_model.dart';
+
 import 'package:qr_scanner/providers/DB_provider.dart';
+import 'package:qr_scanner/providers/ERROR_provider.dart';
 
 class ScanProvider extends ChangeNotifier {
   List<ScanModel> scanModelList = new List<ScanModel>();
   DBProvider db = new DBProvider();
   String type = 'http';
+
 
   ScanProvider._privateConstructor() {
     initializeScanList();
@@ -18,7 +22,9 @@ class ScanProvider extends ChangeNotifier {
   }
 
   void addScan(String value) async {
-    ScanModel newScanModel = ScanModel(value: value);
+    ScanModel newScanModel = ScanModel(value: value, id: "loading");
+    scanModelList.add(newScanModel);
+    notifyListeners();
     db.addData(newScanModel);
     initializeScanList(); //!this already  calls the notifyListener()
   }
