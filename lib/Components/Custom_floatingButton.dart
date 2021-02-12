@@ -15,10 +15,15 @@ class CustomFloatingButton extends StatelessWidget {
           String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
               '#098673', 'Cancelar', false, ScanMode.QR);
           if (barcodeScanRes == '-1') {
-            _errorProvider.error = "Hubo un error, intenta de nuevo.";
+            _errorProvider.error = "Cancelado, si hubo un error intenta de nuevo.";
             return;
           }
-          _scanProvider.addScan(barcodeScanRes);
+
+          var contain = _scanProvider.scanModelList.where((element) => element.value == barcodeScanRes);
+          if (contain.isEmpty)
+             _scanProvider.addScan(barcodeScanRes);
+          else
+            _errorProvider.error = "El dato ingresado ya existe.";
         });
   }
 }

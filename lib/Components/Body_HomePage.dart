@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:qr_scanner/pages/directions.dart';
 import 'package:qr_scanner/pages/maps.dart';
-import 'package:qr_scanner/providers/UI_provider.dart';
+
+import 'package:qr_scanner/providers/Scan_Provider.dart';
+
 
 class BodyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final uiProvider = Provider.of<UIProvider>(context);
-    final selected = uiProvider.pageSelected;
+    final _scanProvider = Provider.of<ScanProvider>(context);
+    final selected = _scanProvider.type;
 
     switch (selected) {
-      case 0:
+      case "geo":
         return MapsPage();
-      case 1:
+      case "http":
         return DirectionPage();
       default:
         return MapsPage();
