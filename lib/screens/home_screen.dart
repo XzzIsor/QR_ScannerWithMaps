@@ -30,6 +30,7 @@ class HomeScreen extends StatelessWidget {
       ),
       body:BodyPage(),
       floatingActionButton: CustomFloatingButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: CustomNavigationBar(),
     );
   }

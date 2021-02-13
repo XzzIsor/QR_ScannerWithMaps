@@ -9,17 +9,28 @@ class DirectionPage extends StatefulWidget {
 }
 
 class _DirectionPageState extends State<DirectionPage> {
+
   @override
   Widget build(BuildContext context) {
-    final _scanProvider = Provider.of<ScanProvider>(context, listen: true);
+  
     return ListView(
-      children: _scanProvider.scanModelList.map((doc) {
-        if (doc.type == 'http'){
-          return CustomListTile(
-            loading: doc.id == 'loading', 
-            value: doc.value, 
-            function:() => _scanProvider.deleteScan(doc.id),);
-        }
-      }).toList());
+      children: listTilewidgets(context),
+    );
+  }
+
+  List<Widget> listTilewidgets(BuildContext context) {
+    final _scanProvider = Provider.of<ScanProvider>(context, listen: true);
+    List<Widget> listTile = [];
+    _scanProvider.scanModelList.forEach((doc) {
+      if (doc.type == 'http') {
+        listTile.add(CustomListTile(
+          loading: doc.id == 'loading',
+          value: doc.value,
+          function: () => _scanProvider.deleteScan(doc.id),
+        ));
+      }
+    });
+
+    return listTile;
   }
 }
