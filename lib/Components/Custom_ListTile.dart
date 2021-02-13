@@ -14,7 +14,7 @@ class CustomListTile extends StatelessWidget {
               title: Text(value),
               trailing: IconButton(
                 icon: Icon(Icons.delete),
-                onPressed: () => function,
+                onPressed: function,
               ),
             ),
           )

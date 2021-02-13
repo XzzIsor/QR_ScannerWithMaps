@@ -24,13 +24,12 @@ class DBProvider {
     QuerySnapshot query = await db.collection(collectionName).get();
     List<ScanModel> data = new List();
     query.docs.forEach((QueryDocumentSnapshot doc) {
-      ScanModel newModel =
-          new ScanModel(value: doc.data()["value"], id: doc.id, type: collectionName);
+      ScanModel newModel = new ScanModel(
+          value: doc.data()["value"], id: doc.id, type: collectionName);
       data.add(newModel);
     });
     return data;
   }
-
 
   Future<void> updateHttpDocument(String id, String value) async {
     return await db.collection("http").doc(id).update({'value': value});
@@ -40,24 +39,27 @@ class DBProvider {
     return await db.collection("geo").doc(id).update({'value': value});
   }
 
-  Future<void> deleteDocuments({String id, @required bool http}) async {
+  Future<void> deleteDocuments({String id, @required String collection}) async {
     if (id != null) {
-      await db.collection(http ? "http" : "geo").doc(id).delete();
+      await db.collection(collection).doc(id).delete();
       return;
     }
     QuerySnapshot query = await db.collection('http').get();
+
     query.docs.forEach((QueryDocumentSnapshot doc) async {
       ScanModel newModel = new ScanModel(
-          value: doc.data()["value"], id: doc.id, type: http ? "http" : "geo");
-      await db.collection(http ? "http" : "geo").doc(newModel.id).delete();
+          value: doc.data()["value"], id: doc.id, type: collection);
+      await db.collection(collection).doc(newModel.id).delete();
     });
   }
 
-  void addData(ScanModel scanModel) {
+  Future<String> addData(ScanModel scanModel) async {
+    DocumentReference _document;
     if (scanModel.type == "http") {
-      db.collection('http').add({"value": scanModel.value});
+      _document = await db.collection('http').add({"value": scanModel.value});
     } else {
-      db.collection("geo").add({"value": scanModel.value});
+      _document = await db.collection("geo").add({"value": scanModel.value});
     }
+    return _document.id;
   }
 }

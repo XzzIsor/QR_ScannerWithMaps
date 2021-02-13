@@ -22,7 +22,6 @@ class ErrorProvider extends ChangeNotifier {
     _error = prmError;
     showAlert(_context); 
     notifyListeners();
-    print("juen es gei"); 
   }
 
   void showAlert(BuildContext context) {

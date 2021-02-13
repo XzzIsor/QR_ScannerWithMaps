@@ -3,14 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:qr_scanner/models/scan_model.dart';
 
 import 'package:qr_scanner/providers/DB_provider.dart';
-import 'package:qr_scanner/providers/ERROR_provider.dart';
 
 class ScanProvider extends ChangeNotifier {
   List<ScanModel> scanModelList = new List<ScanModel>();
   DBProvider db = new DBProvider();
   String type = 'http';
-
-
+  
   ScanProvider._privateConstructor() {
     initializeScanList();
   }
@@ -22,11 +20,14 @@ class ScanProvider extends ChangeNotifier {
   }
 
   void addScan(String value) async {
-    ScanModel newScanModel = ScanModel(value: value, id: "loading");
-    scanModelList.add(newScanModel);
+    ScanModel loadScanModel = ScanModel(value: value, id: "loading");
+    scanModelList.insert(0, loadScanModel);
     notifyListeners();
-    db.addData(newScanModel);
-    initializeScanList(); //!this already  calls the notifyListener()
+    String id = await db.addData(loadScanModel);
+    ScanModel newScanModel = ScanModel(value: value, id: id);
+    scanModelList.removeAt(0);
+    scanModelList.insert(0,newScanModel);
+    notifyListeners();
   }
 
   void changeType(String type) {
@@ -42,15 +43,11 @@ class ScanProvider extends ChangeNotifier {
   void deleteAllScans() {
     scanModelList = [];
     notifyListeners();
-    type == 'http'
-        ? db.deleteDocuments(http: true)
-        : db.deleteDocuments(http: false);
+    db.deleteDocuments(collection: type);
   }
 
   void deleteScan(String id) async {
-    type == 'http'
-        ? await db.deleteDocuments(http: true, id: id)
-        : await db.deleteDocuments(http: false, id: id);
+    await db.deleteDocuments(collection: type, id: id);
     initializeScanList(); //!this already  calls the notifyListener()
   }
 }
