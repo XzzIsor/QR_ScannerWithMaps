@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:qr_scanner/providers/DB_provider.dart';
 import 'package:qr_scanner/Components/Custom_ListTile.dart';
+import 'package:qr_scanner/models/scan_model.dart';
 import 'package:qr_scanner/providers/Scan_Provider.dart';
 
 class MapsPage extends StatelessWidget {
@@ -18,17 +19,17 @@ class MapsPage extends StatelessWidget {
 
     List<Widget> listTile = [];
 
-    _scanProvider.scanModelList.forEach((doc) {
+    for (int i = 0; i < _scanProvider.scanModelList.length; i++) {
+       ScanModel doc = _scanProvider.scanModelList[i];
+
       if (doc.type == 'geo') {
-        listTile.add(
-          CustomListTile(
+        listTile.add(CustomListTile(
           loading: doc.id == 'loading',
           value: doc.value,
-          function: () => _scanProvider.deleteScan(doc.id),
-          )
-        );
+          function: () => _scanProvider.deleteScan(i),
+        ));
       }
-    });
+    }
 
     return listTile;
   }

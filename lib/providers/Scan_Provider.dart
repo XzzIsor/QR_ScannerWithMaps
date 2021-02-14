@@ -8,7 +8,7 @@ class ScanProvider extends ChangeNotifier {
   List<ScanModel> scanModelList = new List<ScanModel>();
   DBProvider db = new DBProvider();
   String type = 'http';
-  
+
   ScanProvider._privateConstructor() {
     initializeScanList();
   }
@@ -26,7 +26,7 @@ class ScanProvider extends ChangeNotifier {
     String id = await db.addData(loadScanModel);
     ScanModel newScanModel = ScanModel(value: value, id: id);
     scanModelList.removeAt(0);
-    scanModelList.insert(0,newScanModel);
+    scanModelList.insert(0, newScanModel);
     notifyListeners();
   }
 
@@ -46,8 +46,9 @@ class ScanProvider extends ChangeNotifier {
     db.deleteDocuments(collection: type);
   }
 
-  void deleteScan(String id) async {
-    await db.deleteDocuments(collection: type, id: id);
-    initializeScanList(); //!this already  calls the notifyListener()
+  void deleteScan(int index) async {
+    ScanModel scandeleted = scanModelList.removeAt(index);
+    notifyListeners();
+    await db.deleteDocuments(collection: type, id: scandeleted.id);
   }
 }
