@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_scanner/Components/Custom_ListTile.dart';
+import 'package:qr_scanner/models/scan_model.dart';
 import 'package:qr_scanner/providers/Scan_Provider.dart';
 
 class DirectionPage extends StatefulWidget {
@@ -9,28 +10,30 @@ class DirectionPage extends StatefulWidget {
 }
 
 class _DirectionPageState extends State<DirectionPage> {
+  List<Widget> listTile;
+  final key = GlobalKey<AnimatedListState>();
 
   @override
   Widget build(BuildContext context) {
-  
+    initializeListTilewidgets(context);
     return ListView(
-      children: listTilewidgets(context),
+      children: listTile,
     );
   }
 
-  List<Widget> listTilewidgets(BuildContext context) {
+  void initializeListTilewidgets(BuildContext context) {
     final _scanProvider = Provider.of<ScanProvider>(context, listen: true);
-    List<Widget> listTile = [];
-    _scanProvider.scanModelList.forEach((doc) {
+    listTile = [];
+
+    for (int i = 0; i < _scanProvider.scanModelList.length; i++) {
+      ScanModel doc = _scanProvider.scanModelList[i];
       if (doc.type == 'http') {
         listTile.add(CustomListTile(
           loading: doc.id == 'loading',
           value: doc.value,
-          function: () => _scanProvider.deleteScan(doc.id),
+          function: () => _scanProvider.deleteScan(i),
         ));
       }
-    });
-
-    return listTile;
+    }
   }
 }
