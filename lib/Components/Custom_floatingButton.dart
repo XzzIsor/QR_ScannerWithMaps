@@ -18,7 +18,6 @@ class CustomFloatingButton extends StatelessWidget {
             _errorProvider.error = "Cancelado, si hubo un error intenta de nuevo.";
             return;
           }
-
           var contain = _scanProvider.scanModelList.where((element) => element.value == barcodeScanRes);
           if (contain.isEmpty)
              _scanProvider.addScan(barcodeScanRes);

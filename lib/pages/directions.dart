@@ -16,8 +16,11 @@ class _DirectionPageState extends State<DirectionPage> {
   @override
   Widget build(BuildContext context) {
     initializeListTilewidgets(context);
-    return ListView(
-      children: listTile,
+    return ListView.builder(
+      itemCount: listTile.length,
+      itemBuilder: (context, index) {
+        return listTile[index]; 
+      },
     );
   }
 
