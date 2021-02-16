@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:qr_scanner/Components/Custom_ListTile.dart';
 import 'package:qr_scanner/models/scan_model.dart';
 import 'package:qr_scanner/providers/Scan_Provider.dart';
+import 'package:qr_scanner/utils/url_util.dart';
 
 class DirectionPage extends StatefulWidget {
   @override
@@ -34,7 +35,8 @@ class _DirectionPageState extends State<DirectionPage> {
         listTile.add(CustomListTile(
           loading: doc.id == 'loading',
           value: doc.value,
-          function: () => _scanProvider.deleteScan(i),
+          cleanFunction: () => _scanProvider.deleteScan(i),
+          onTap: () => launchURL(context, doc),
         ));
       }
     }

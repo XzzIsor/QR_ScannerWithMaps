@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-class CustomListTile extends StatefulWidget {
-  
+class CustomListTile extends StatefulWidget {  
   final String value;
-  final Function function;
+  final Function cleanFunction;
+  final Function onTap;
   final bool loading;
-  CustomListTile({this.value, this.function, @required this.loading});
-
+  CustomListTile({this.value, this.cleanFunction, @required this.loading, @required  this.onTap});
   @override
   _CustomListTileState createState() => _CustomListTileState();
 }
@@ -22,13 +21,14 @@ class _CustomListTileState extends State<CustomListTile> {
           
           onDismissed: (direction) {
                 setState(() {
-                  widget.function(); 
+                  widget.cleanFunction();
                 });
                 Scaffold.of(context).showSnackBar(SnackBar(content: Text("Eliminado")));
           },
           background: Container(color: Colors.red[900]),
           child: Card(
               child: ListTile(
+                onTap: widget.onTap,
                 title: Text(widget.value),
               ),
           ),

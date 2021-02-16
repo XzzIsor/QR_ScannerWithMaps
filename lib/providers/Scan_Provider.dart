@@ -19,7 +19,7 @@ class ScanProvider extends ChangeNotifier {
     return _instance;
   }
 
-  void addScan(String value) async {
+  Future<ScanModel> addScan(String value) async {
     ScanModel loadScanModel = ScanModel(value: value, id: "loading");
     scanModelList.insert(0, loadScanModel);
     notifyListeners();
@@ -28,6 +28,7 @@ class ScanProvider extends ChangeNotifier {
     scanModelList.removeAt(0);
     scanModelList.insert(0, newScanModel);
     notifyListeners();
+    return newScanModel;
   }
 
   void changeType(String type) {

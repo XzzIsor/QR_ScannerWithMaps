@@ -5,6 +5,7 @@ import 'package:qr_scanner/providers/DB_provider.dart';
 import 'package:qr_scanner/Components/Custom_ListTile.dart';
 import 'package:qr_scanner/models/scan_model.dart';
 import 'package:qr_scanner/providers/Scan_Provider.dart';
+import 'package:qr_scanner/utils/url_util.dart';
 
 class MapsPage extends StatelessWidget {
   final DBProvider db = new DBProvider();
@@ -26,7 +27,8 @@ class MapsPage extends StatelessWidget {
         listTile.add(CustomListTile(
           loading: doc.id == 'loading',
           value: doc.value,
-          function: () => _scanProvider.deleteScan(i),
+          cleanFunction: () => _scanProvider.deleteScan(i),
+          onTap: () => launchURL(context, doc),
         ));
       }
     }
