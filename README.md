@@ -1,7 +1,8 @@
 # qr_scanner
 
 A new Flutter project.
-a program to read QR codes
+Works in Android & IOS
+a program to read QR codes, it is possible to open open latitude and longitude coordinates using GoogleMaps, as well as it is also possible to open http links in your default browser.
 
 ## Getting Started
 
